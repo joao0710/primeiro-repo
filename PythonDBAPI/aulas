@@ -1,0 +1,47 @@
+import MySQLdb
+
+db = MySQLdb.connect(user="root", passwd="11235813", db="treinaweb_cliente", host="localhost", port=3306)
+cursor = db.cursor()
+cursor.execute("SELECT * FROM cliente")
+print(cursor.fetchall())
+print(cursor.fetcone())
+print(cursor.fetchmany(2))
+print("Conexão realizada com sucesso")
+db.close()
+
+#Inserindo tuplas MySQL a partir do python
+cursor.execute("INSERT INTO cliente (nome, idade) VALUES ('Maria', 25)")
+cursor.execute("SELECT * FROM cliente")
+print(cursor.fetchall())
+db.close()
+
+#Recuperando o ID do último registro
+print(cursor.lastrowid())
+db.close()
+
+#Atualizando registros
+cursor.execute("UPDATE cliente SET nome='Ana' WHERE idcliente=2")
+cursor.execute("SELECT * FROM cliente")
+print(cursor.fetchall())
+db.close()
+
+#Excluindo registros
+cursor.execute("DELETE FROM cliente WHERE idcliente=2")
+cursor.execute("SELECT * FROM cliente")
+print(cursor.fetchall())
+
+#Executando uma transação
+try:
+    db.begin()
+    cursor.execute("INSERT INTO cliente(nome, idade) VALUES('Maria', 25)")
+    cursor.execute("INSERT INTO cliente(nome, idade) VALUES('Jose', 25)")
+    db.commit()
+except:
+    cursor.rollback()
+
+#Enviando parâmetros para o método execute
+nome = "'Carlos', idade=80"
+cursor.execute("UPDATE cliente SET nome=%s WHERE idcliente=13", (nome, ))
+cursor.execute("SELECT * FROM cliente")
+print(cursor.fetchall())
+db.close()
